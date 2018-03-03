@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <h1>This is root page</h1>
-    <menuPage></menuPage>
+    <!-- <menuPage></menuPage> -->
     <yourRaces v-bind:userRaceRef="userRaceRef"></yourRaces>
     <button v-on:click="singout">singout</button>
   </div>
@@ -23,7 +23,7 @@ export default {
     }
   },
   created: function () {
-    console.log("Main root is not created yet");
+    console.log("Main is created");
     let user = firebase.auth().currentUser;
     let uid = user.uid;
     this.userRaceRef = firebase.database().ref(user.uid);
