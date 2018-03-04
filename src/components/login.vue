@@ -16,8 +16,8 @@ export default {
   data () {
     return {
       title: 'This is login page',
-      password : "",
-      email : ""
+      password : "12345678",
+      email : "szymon@test.com"
     }
   },
   methods : {
