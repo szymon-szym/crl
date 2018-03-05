@@ -13,7 +13,8 @@
       <input type="text" placeholder="Add race location" v-model="raceToAdd.location"><br>
       <label>Add race distance</label>
       <input type="number" placeholder="Add race distance" v-model="raceToAdd.distance"><br>
-      <button v-on:click.prevent="addRace">Add race to your list</button>
+      <button v-if="!showEditBtn" v-on:click.prevent="addRace()">Add race to your list</button>
+      <button v-if="showEditBtn" v-on:click="updateRace()">Update race</button>
     </div>
     <h2>Your races table</h2>
         <table>
@@ -29,7 +30,9 @@
             <td> {{ race.location }}</td>
             <td> {{ race.date }}</td>
             <td> {{ race.distance }}</td>
-            <td><button v-on:click="RemoveRace(race.key)">Remove</button></td>
+            <td><button v-on:click="removeRace(race.key)">Remove</button>
+                <button v-on:click="editRace(race)">Edit</button>
+            </td>
           </tr>
         </table>
   </div>
@@ -49,7 +52,10 @@ export default {
         location: "",
         distance: 0
         },
-      showAddForm : false
+      raceUpdateKey: '',
+        //state form and button -> to store in one obj
+      showAddForm : false,
+      showEditBtn : false
     }
   },
   created: function () {
@@ -57,6 +63,13 @@ export default {
     let tempRace = snap.val();
     tempRace.key = snap.key;
     this.userRaces.push(tempRace)
+    // console.log(tempRace.name);
+    }),
+    this.userRaceRef.on("child_changed", snap => {
+    let tempRace = snap.val();
+    tempRace.key = snap.key;
+    document.getElementById(snap.key).remove();
+    this.userRaces.push(tempRace);
     // console.log(tempRace.name);
     }),
     this.userRaceRef.on("child_removed", snap => {
@@ -86,8 +99,25 @@ export default {
     LogKey: function (key) {
       console.log(key);
     },
-    RemoveRace: function(key) {
+    removeRace: function(key) {
       this.userRaceRef.child(key).remove()
+    },
+    editRace: function(raceObj) {
+      console.log(raceObj);
+      this.raceToAdd.name = raceObj.name;
+      this.raceToAdd.date = raceObj.date;
+      this.raceToAdd.location = raceObj.location;
+      this.raceToAdd.distance = raceObj.distance;
+      this.raceUpdateKey = raceObj.key
+      this.showAddForm = true;
+      this.showEditBtn = true
+      // this.userRaceRef.child(key).remove()
+    },
+    updateRace: function () {
+      console.log(this.raceUpdateKey);
+      this.userRaceRef.child(this.raceUpdateKey).update(this.raceToAdd);
+      this.showAddForm = false;
+      this.showEditBtn = false;
     }
   }
 }

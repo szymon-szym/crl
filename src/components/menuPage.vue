@@ -1,18 +1,18 @@
 <template>
   <div class="main">
-    <h1>This is menu</h1>
-    <button>Add race</button>
-    <button>Your races</button>
+    <h1>This is menu page</h1>
+    <button v-on:click="gotoYourRaces">Your races</button>
     <button>Achievements</button>
     <button>Stats</button>
   </div>
 </template>
 
 <script>
-import firebase from "firebase"
+import firebase from "firebase";
+import {EventBus} from '../helpers/event-bus'
 export default {
-  name: 'yourRaces',
-
+  props: ["navigationStatus"],
+  name: 'menuPage',
   data () {
     return {
     }
@@ -24,6 +24,18 @@ export default {
         }).catch(function(error) {
           // An error happened.
         });
+    },
+    gotoYourRaces: function () {
+      this.navigationStatus.showYourRaces = !(this.navigationStatus.showYourRaces);
+      // EventBus.$emit("navigation", this.navigationStatus);
+    },
+    gotoAchievements: function () {
+      this.navigationStatus.showAchievements = !(this.navigationStatus.showAchievements);
+      // EventBus.$emit("navigation", this.navigationStatus);
+    },
+    gotoStats: function () {
+      this.navigationStatus.showStats = !(this.navigationStatus.showStats);
+      // EventBus.$emit("navigation", this.navigationStatus);
     }
   }
 }

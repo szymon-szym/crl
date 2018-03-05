@@ -1,14 +1,16 @@
 <template>
   <div class="">
     <h1>This is root page</h1>
-    <!-- <menuPage></menuPage> -->
-    <yourRaces v-bind:userRaceRef="userRaceRef"></yourRaces>
+    <menuPage v-bind:navigationStatus = "navigationStatus"></menuPage>
+    <yourRaces v-bind:userRaceRef="userRaceRef" v-if="navigationStatus.showYourRaces"></yourRaces>
     <button v-on:click="singout">singout</button>
+    <p> {{ navigationStatus.showYourRaces }}</p>
   </div>
 </template>
 
 <script>
 import firebase from "firebase"
+import {EventBus} from '../helpers/event-bus'
 import yourRaces from "./yourRaces.vue"
 import menuPage from "./menuPage.vue"
 export default {
@@ -20,6 +22,11 @@ export default {
   data () {
     return {
       userRaceRef : {},
+      navigationStatus: {
+        showYourRaces: false,
+        showAchievements: false,
+        showStats: false
+      }
     }
   },
   created: function () {
@@ -31,6 +38,12 @@ export default {
       ///just to snap all races into cache
     })
   },
+  // created: function () {
+  //   EventBus.$on('navigation', newNav => {
+  //     this.navigationStatus = newNav;
+  //     console.log(this.navigationStatus);
+  //   })
+  // },
   methods: {
     singout: function () {
       firebase.auth().signOut().then(() => {
