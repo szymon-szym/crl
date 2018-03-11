@@ -12,15 +12,15 @@
           <th class = "row-date">Date</th>
           <th class = "row-distance">km</th>
           <th class = "row-buttons"></th>
+          <th class = "row-buttons"></th>
         </tr>
         <tr v-for="(race, index) of userRaces" v-bind:id="race.key">
           <td> {{ race.name }}</td>
           <td> {{ race.location }}</td>
           <td> {{ race.date }}</td>
           <td> {{ race.distance }}</td>
-          <td><button v-on:click="removeRace(race.key, index)">Remove</button>
-            <button v-on:click="editRace(race)">Edit</button>
-          </td>
+          <td><button @click="removeRace(race.key, index)">Remove</button></td>
+          <td><button @click="editRace(race)">Edit</button></td>
         </tr>
       </table>
     </div>
@@ -40,14 +40,28 @@ export default {
       userRaces () {
         return this.$store.getters.getUserRaces
       },
+      raceToAdd () {
+        return this.$store.getters.getRaceToAdd
+      },
       getUser: state => {
         return state.currentUser
       }
     },
     created: function () {
       this.$store.dispatch('setUserRaces')
+      //swith to add mode by default
+      this.$store.dispatch('setAddFormState', true)
     },
     methods: {
+      goToRaces: function () {
+        let menuState = {
+          menu: false,
+          races: true,
+          achievemets: false,
+          stats: false,
+          form: false
+        }
+      },
       goToMenu: function () {
         let menuState = {
           menu: true,
@@ -68,32 +82,22 @@ export default {
         }
           this.$store.dispatch('setMenuState', menuState)
         },
+      editRace: function(race) {
+        this.$store.dispatch('setRaceToAdd', race)
+        //switch to update mode
+        this.$store.dispatch('setAddFormState', false)
+        this.goToForm()
+      },
       removeRace: function(rKey, rIndex) {
         let removeData = {
           key: rKey,
           index: rIndex
           };
-        this.$store.dispatch('removeRace', removeData);
+        this.$store.dispatch('removeRace', removeData)
+        this.goToRaces()
       }
-    }
-      // editRace: function(raceObj) {
-      //   // console.log(raceObj);
-      //   // this.raceToAdd.name = raceObj.name;
-      //   // this.raceToAdd.date = raceObj.date;
-      //   // this.raceToAdd.location = raceObj.location;
-      //   // this.raceToAdd.distance = raceObj.distance;
-      //   // this.raceUpdateKey = raceObj.key
-      //   // this.showAddForm = true;
-      //   // this.showEditBtn = true
-      //   // this.userRaceRef.child(key).remove()
-      // }
-      // // updateRace: function () {
-      // //   // console.log(this.raceUpdateKey);
-      // //   this.userRaceRef.child(this.raceUpdateKey).update(this.raceToAdd);
-      // //   this.showAddForm = false;
-      // //   this.showEditBtn = false;
-      // // }
 
+    }
 }
 </script>
 
@@ -148,6 +152,6 @@ tr:nth-child(even) {
   width: 5%;
 }
 .row-buttons {
-  width: 20%;
+  width: 10%;
 }
 </style>

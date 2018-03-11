@@ -13,7 +13,7 @@
       <label>Add race distance</label>
       <input type="number" placeholder="Add race distance" v-model="tempRace.distance"><br>
       <button v-if="addFormState" @click="addRace()">Add race to your list</button>
-      <button v-if="!addFormState">Update race</button>
+      <button v-if="!addFormState" @click="updateRace(tempRace)">Update race</button>
     </div>
   </div>
 </template>
@@ -53,22 +53,11 @@ export default {
         this.$store.dispatch('addRace')
         this.goToRaces()
       },
-      editRace: function(raceObj) {
-        // console.log(raceObj);
-        this.raceToAdd.name = raceObj.name;
-        this.raceToAdd.date = raceObj.date;
-        this.raceToAdd.location = raceObj.location;
-        this.raceToAdd.distance = raceObj.distance;
-        this.raceUpdateKey = raceObj.key
-        this.showAddForm = true;
-        this.showEditBtn = true
-        // this.userRaceRef.child(key).remove()
-      },
-      updateRace: function () {
-        // console.log(this.raceUpdateKey);
-        this.userRaceRef.child(this.raceUpdateKey).update(this.raceToAdd);
-        this.showAddForm = false;
-        this.showEditBtn = false;
+      updateRace: function (race) {
+        this.$store.dispatch('setRaceToAdd', this.tempRace)
+        console.log(this.$store.getters.getRaceToAdd);
+        this.$store.dispatch('updateRace')
+        this.goToRaces()
       }
   }
 }

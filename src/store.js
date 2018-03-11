@@ -53,12 +53,19 @@ export default new Vuex.Store({
     setMenuState: (state, payload) => {
       state.menuSate = payload
     },
+    setAddFormState: (state, payload) => {
+      state.addFormState = payload
+    },
     setRaceToAdd: (state, payload) => {
       state.raceToAdd = payload
     },
     addRace: (state) => {
       let userRef = state.currentUser.uid
       firebase.database().ref(userRef).push(state.raceToAdd)
+    },
+    updateRace: (state) => {
+      let updateRef = state.currentUser.uid + '/' + state.raceToAdd.key
+      firebase.database().ref(updateRef).update(state.raceToAdd)
     },
     setUserRaces: state => {
       state.userRaces = []
@@ -72,7 +79,7 @@ export default new Vuex.Store({
     removeRace: (state, payload) => {
       let userRef = state.currentUser.uid
       firebase.database().ref(userRef).child(payload.key).remove()
-      // state.userRaces.splice(payload.index, 0)
+      state.userRaces.splice(payload.index, 1)
     },
     clearData: state => {
       state.menuSate = {
@@ -92,12 +99,19 @@ export default new Vuex.Store({
     setMenuState: (context, payload) => {
       context.commit('setMenuState', payload)
     },
+    setAddFormState: (context, payload) => {
+      context.commit('setAddFormState', payload)
+    },
     setUserRaces: context => {
       context.commit('setUserRaces')
     },
     addRace: (context) => {
       context.commit('addRace')
       console.log('race added')
+    },
+    updateRace: (context) => {
+      context.commit('updateRace')
+      console.log('race updated')
     },
     removeRace: (context, payload) => {
       context.commit('removeRace', payload)
