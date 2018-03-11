@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import login from '@/components/login'
 import register from '@/components/register'
 import main from '@/components/main'
+import races from '@/components/yourRaces'
 import firebase from "firebase"
 
 Vue.use(Router)

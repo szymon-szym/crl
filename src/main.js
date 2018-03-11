@@ -4,21 +4,21 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import firebase from 'firebase'
-import {config} from './helpers/firebase'
-import VueFire from 'vuefire'
+// import firebase from './helpers/firebase'
+import store from './store'
 
-Vue.use(VueFire);
+// Vue.use(VueFire)
 
 Vue.config.productionTip = false
 let app
 
-firebase.initializeApp(config)
 firebase.auth().onAuthStateChanged(function (user) {
   if (!app) {
     /* eslint-disable no-new */
     app = new Vue({
       el: '#app',
       router,
+      store,
       components: { App },
       template: '<App/>'
     })

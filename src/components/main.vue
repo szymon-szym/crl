@@ -1,59 +1,59 @@
 <template>
   <div class="">
-    <h1>This is root page</h1>
-    <menuPage v-bind:navigationStatus = "navigationStatus"></menuPage>
-    <yourRaces v-bind:userRaceRef="userRaceRef" v-if="navigationStatus.showYourRaces"></yourRaces>
-    <button v-on:click="singout">singout</button>
-    <p> {{ navigationStatus.showYourRaces }}</p>
+    <h1>{{ getMsg }}</h1>
+    <p> Hello {{ currentUser.uid }} !</p>
+    <button @click="singout">singout</button>
+    <menuPage v-if="menuSate.menu"></menuPage>
+    <yourRaces v-if="menuSate.races"></yourRaces>
+    <addRaceForm v-if="menuSate.form"></addRaceForm>
+    <achievements v-if="menuSate.achievements"></achievements>
+    <stats v-if="menuSate.stats"></stats>
   </div>
 </template>
 
 <script>
 import firebase from "firebase"
-import {EventBus} from '../helpers/event-bus'
 import yourRaces from "./yourRaces.vue"
+import addRaceForm from "./addRaceForm.vue"
 import menuPage from "./menuPage.vue"
+import achievements from "./achievements.vue"
+import stats from "./stats.vue"
 export default {
   name: 'main',
   components : {
     "yourRaces" : yourRaces,
-    "menuPage" : menuPage
+    "menuPage" : menuPage,
+    "addRaceForm" : addRaceForm,
+    "achievements" : achievements,
+    "stats" : stats
   },
   data () {
     return {
-      userRaceRef : {},
-      navigationStatus: {
-        showYourRaces: false,
-        showAchievements: false,
-        showStats: false
-      }
+        //
     }
   },
-  created: function () {
-    console.log("Main is created");
-    let user = firebase.auth().currentUser;
-    let uid = user.uid;
-    this.userRaceRef = firebase.database().ref(user.uid);
-    this.userRaceRef.on("value", snap => {
-      ///just to snap all races into cache
-    })
-  },
-  // created: function () {
-  //   EventBus.$on('navigation', newNav => {
-  //     this.navigationStatus = newNav;
-  //     console.log(this.navigationStatus);
-  //   })
-  // },
-  methods: {
+    computed: {
+      currentUser () {
+        return this.$store.getters.getUser
+      },
+      menuSate () {
+        return this.$store.getters.getMenuState
+      },
+      getMsg () {
+        return this.$store.getters.getMsg
+      }
+    },
+    created: function () {
+        this.$store.dispatch('setUser');
+    },
+    methods: {
     singout: function () {
       firebase.auth().signOut().then(() => {
           this.$router.replace("login")
+          this.$store.dispatch('clearData')
         }).catch(function(error) {
           // An error happened.
         });
-    },
-    addRace : function () {
-      this.userRaceRef.push({name : "testing VF"})
     }
   }
 }

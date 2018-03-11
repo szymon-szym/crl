@@ -1,125 +1,99 @@
 <template>
   <div class="">
     <h1>Your races page</h1>
-    <button v-if="!showAddForm" v-on:click="showAddForm = !showAddForm">Add race</button>
-    <div v-if="showAddForm"  class="addRaceForm" >
-      <button v-on:click="showAddForm = false">Back</button>
-      <h2>Add custom race</h2>
-      <label>Add race name</label>
-      <input type="text" placeholder="Add race name" v-model="raceToAdd.name"><br>
-      <label>Add race date</label>
-      <input type="text" placeholder="Add race date" v-model="raceToAdd.date"><br>
-      <label>Add race location</label>
-      <input type="text" placeholder="Add race location" v-model="raceToAdd.location"><br>
-      <label>Add race distance</label>
-      <input type="number" placeholder="Add race distance" v-model="raceToAdd.distance"><br>
-      <button v-if="!showEditBtn" v-on:click.prevent="addRace()">Add race to your list</button>
-      <button v-if="showEditBtn" v-on:click="updateRace()">Update race</button>
+    <div class="yourRacesTable">
+      <h2>Your races table</h2>
+      <button @click="goToMenu">Back to main menu</button>
+      <button @click="goToForm">Add new race</button>
+      <table>
+        <tr>
+          <th class = "row-name">Race name</th>
+          <th class = "row-location">Location</th>
+          <th class = "row-date">Date</th>
+          <th class = "row-distance">km</th>
+          <th class = "row-buttons"></th>
+        </tr>
+        <tr v-for="(race, index) of userRaces" v-bind:id="race.key">
+          <td> {{ race.name }}</td>
+          <td> {{ race.location }}</td>
+          <td> {{ race.date }}</td>
+          <td> {{ race.distance }}</td>
+          <td><button v-on:click="removeRace(race.key, index)">Remove</button>
+            <button v-on:click="editRace(race)">Edit</button>
+          </td>
+        </tr>
+      </table>
     </div>
-    <h2>Your races table</h2>
-        <table>
-          <tr>
-            <th class = "row-name">Race name</th>
-            <th class = "row-location">Location</th>
-            <th class = "row-date">Date</th>
-            <th class = "row-distance">km</th>
-            <th class = "row-buttons"></th>
-          </tr>
-          <tr v-for="race of userRaces" v-bind:id="race.key">
-            <td> {{ race.name }}</td>
-            <td> {{ race.location }}</td>
-            <td> {{ race.date }}</td>
-            <td> {{ race.distance }}</td>
-            <td><button v-on:click="removeRace(race.key)">Remove</button>
-                <button v-on:click="editRace(race)">Edit</button>
-            </td>
-          </tr>
-        </table>
   </div>
 </template>
 
 <script>
 import firebase from "firebase"
 export default {
-  props: ["userRaceRef"],
-  name: 'yourRaces',
+  name: 'races',
   data () {
     return {
-      userRaces: [],
-      raceToAdd: {
-        name: "",
-        date: "",
-        location: "",
-        distance: 0
-        },
-      raceUpdateKey: '',
-        //state form and button -> to store in one obj
-      showAddForm : false,
-      showEditBtn : false
+      //
     }
-  },
-  created: function () {
-    this.userRaceRef.on("child_added", snap => {
-    let tempRace = snap.val();
-    tempRace.key = snap.key;
-    this.userRaces.push(tempRace)
-    // console.log(tempRace.name);
-    }),
-    this.userRaceRef.on("child_changed", snap => {
-    let tempRace = snap.val();
-    tempRace.key = snap.key;
-    document.getElementById(snap.key).remove();
-    this.userRaces.push(tempRace);
-    // console.log(tempRace.name);
-    }),
-    this.userRaceRef.on("child_removed", snap => {
-      const raceToRemove = document.getElementById(snap.key);
-      raceToRemove.remove();
-      console.log("Race removed");
-    })
-  },
-  methods: {
-    singout: function () {
-      firebase.auth().signOut().then(() => {
-          this.$router.replace("login")
-        }).catch(function(error) {
-          // An error happened.
-        });
     },
-    addRace : function () {
-      this.userRaceRef.push(this.raceToAdd);
-      this.raceToAdd = {
-        name: "",
-        date: "",
-        location: "",
-        distance: 0
+    computed: {
+      userRaces () {
+        return this.$store.getters.getUserRaces
       },
-      this.showAddForm = false
+      getUser: state => {
+        return state.currentUser
+      }
     },
-    LogKey: function (key) {
-      console.log(key);
+    created: function () {
+      this.$store.dispatch('setUserRaces')
     },
-    removeRace: function(key) {
-      this.userRaceRef.child(key).remove()
-    },
-    editRace: function(raceObj) {
-      console.log(raceObj);
-      this.raceToAdd.name = raceObj.name;
-      this.raceToAdd.date = raceObj.date;
-      this.raceToAdd.location = raceObj.location;
-      this.raceToAdd.distance = raceObj.distance;
-      this.raceUpdateKey = raceObj.key
-      this.showAddForm = true;
-      this.showEditBtn = true
-      // this.userRaceRef.child(key).remove()
-    },
-    updateRace: function () {
-      console.log(this.raceUpdateKey);
-      this.userRaceRef.child(this.raceUpdateKey).update(this.raceToAdd);
-      this.showAddForm = false;
-      this.showEditBtn = false;
+    methods: {
+      goToMenu: function () {
+        let menuState = {
+          menu: true,
+          races: false,
+          achievemets: false,
+          stats: false,
+          stats: true
+        }
+        this.$store.dispatch('setMenuState', menuState)
+      },
+      goToForm: function () {
+        let menuState = {
+          menu: false,
+          races: false,
+          achievemets: false,
+          stats: false,
+          form: true
+        }
+          this.$store.dispatch('setMenuState', menuState)
+        },
+      removeRace: function(rKey, rIndex) {
+        let removeData = {
+          key: rKey,
+          index: rIndex
+          };
+        this.$store.dispatch('removeRace', removeData);
+      }
     }
-  }
+      // editRace: function(raceObj) {
+      //   // console.log(raceObj);
+      //   // this.raceToAdd.name = raceObj.name;
+      //   // this.raceToAdd.date = raceObj.date;
+      //   // this.raceToAdd.location = raceObj.location;
+      //   // this.raceToAdd.distance = raceObj.distance;
+      //   // this.raceUpdateKey = raceObj.key
+      //   // this.showAddForm = true;
+      //   // this.showEditBtn = true
+      //   // this.userRaceRef.child(key).remove()
+      // }
+      // // updateRace: function () {
+      // //   // console.log(this.raceUpdateKey);
+      // //   this.userRaceRef.child(this.raceUpdateKey).update(this.raceToAdd);
+      // //   this.showAddForm = false;
+      // //   this.showEditBtn = false;
+      // // }
+
 }
 </script>
 

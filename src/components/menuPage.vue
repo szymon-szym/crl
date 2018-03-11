@@ -1,44 +1,54 @@
 <template>
   <div class="main">
     <h1>This is menu page</h1>
-    <button v-on:click="gotoYourRaces">Your races</button>
-    <button>Achievements</button>
-    <button>Stats</button>
+    <button @click="goToRaces">Your races</button>
+    <button @click="goToAch">Achievements</button>
+    <button @click="goToStats">Stats</button>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
-import {EventBus} from '../helpers/event-bus'
 export default {
-  props: ["navigationStatus"],
   name: 'menuPage',
   data () {
     return {
     }
   },
   methods: {
-    singout: function () {
-      firebase.auth().signOut().then(() => {
-          this.$router.replace("login")
-        }).catch(function(error) {
-          // An error happened.
-        });
+    goToRaces: function () {
+      let menuState = {
+        menu: false,
+        races: true,
+        achievemets: false,
+        stats: false,
+        form: false
+      }
+        this.$store.dispatch('setMenuState', menuState)
+      },
+    goToAch: function () {
+      let menuState = {
+        menu: false,
+        races: false,
+        achievements: true,
+        stats: false,
+        form: false
+      }
+        this.$store.dispatch('setMenuState', menuState)
+      },
+      goToStats: function () {
+        let menuState = {
+          menu: false,
+          races: false,
+          achievements: false,
+          stats: true,
+          form: false
+        }
+          this.$store.dispatch('setMenuState', menuState)
+        }
     },
-    gotoYourRaces: function () {
-      this.navigationStatus.showYourRaces = !(this.navigationStatus.showYourRaces);
-      // EventBus.$emit("navigation", this.navigationStatus);
-    },
-    gotoAchievements: function () {
-      this.navigationStatus.showAchievements = !(this.navigationStatus.showAchievements);
-      // EventBus.$emit("navigation", this.navigationStatus);
-    },
-    gotoStats: function () {
-      this.navigationStatus.showStats = !(this.navigationStatus.showStats);
-      // EventBus.$emit("navigation", this.navigationStatus);
-    }
   }
-}
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
