@@ -73,16 +73,16 @@ export default new Vuex.Store({
       }
     },
     addRace: (state) => {
-      let userRef = state.currentUser.uid
+      let userRef = 'userRaces/' + state.currentUser.uid
       firebase.database().ref(userRef).push(state.raceToAdd)
     },
     updateRace: (state) => {
-      let updateRef = state.currentUser.uid + '/' + state.raceToAdd.key
+      let updateRef = 'userRaces/' + state.currentUser.uid + '/' + state.raceToAdd.key
       firebase.database().ref(updateRef).update(state.raceToAdd)
     },
     setUserRaces: state => {
       state.userRaces = []
-      let userRef = state.currentUser.uid
+      let userRef = 'userRaces/' + state.currentUser.uid
       firebase.database().ref(userRef).on('child_added', snap => {
         let tempRace = snap.val()
         tempRace.key = snap.key
@@ -99,7 +99,7 @@ export default new Vuex.Store({
       })
     },
     removeRace: (state, payload) => {
-      let userRef = state.currentUser.uid
+      let userRef = 'userRaces/' + state.currentUser.uid
       firebase.database().ref(userRef).child(payload.key).remove()
       state.userRaces.splice(payload.index, 1)
     },

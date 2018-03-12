@@ -20,7 +20,7 @@
           <td> {{ race.location }}</td>
           <td> {{ race.date }}</td>
           <td> {{ race.distance }}</td>
-          <td><button @click="removeRace(race.key, index)">Remove</button></td>
+          <td><button @click="removeRace(race.key, index, race.name)">Remove</button></td>
           <td><button @click="editRace(race)">Edit</button></td>
         </tr>
       </table>
@@ -82,7 +82,7 @@ export default {
           races: false,
           achievemets: false,
           stats: false,
-          form: true,
+          form: false,
           calendar: false
         }
         this.$store.dispatch('setMenuState', menuState)
@@ -104,12 +104,17 @@ export default {
         this.$store.dispatch('setAddFormState', false)
         this.goToForm()
       },
-      removeRace: function(rKey, rIndex) {
+      removeRace: function(rKey, rIndex, name) {
         let removeData = {
           key: rKey,
           index: rIndex
           };
         this.$store.dispatch('removeRace', removeData)
+        this.$notify({
+          group: 'races',
+          title: 'Race removed',
+          text: name
+        })
         this.goToRaces()
       }
 
@@ -139,8 +144,9 @@ h1, h2 {
 }
 table {
   table-layout: fixed;
-  width: 100%;
+  width: 90%;
   white-space: nowrap;
+  margin: 0 auto;
 }
 td {
   white-space: nowrap;
@@ -156,18 +162,19 @@ tr:nth-child(even) {
   background: lightblue;
 }
 .row-name {
-  width: 50%;
+  width: 35%;
 }
 .row-location {
-  width: 15%;
+  width: 20%;
 }
 .row-date {
-  width: 10%;
+  width: 18%;
 }
 .row-distance {
-  width: 5%;
+  width: 12%;
 }
 .row-buttons {
-  width: 10%;
+  width: 15%;
 }
+
 </style>

@@ -2,6 +2,13 @@
   <div class="">
     <button @click="goToMenu">Bak to main menu</button>
     <h2>Here you can find your cool achievements</h2>
+    <div class="badges">
+      <div class="">
+
+      </div>
+      <img src="../assets/oneStar.svg" alt="oneStar">
+      <img src="../assets/3stars.svg" alt="3stars">
+    </div>
   </div>
 </template>
 
@@ -18,6 +25,9 @@ export default {
     computed: {
       currentUser () {
         return this.$store.getters.getUser
+      },
+      userRaces () {
+        return this.$store.getters.getUserRaces
       },
       menuSate () {
         return this.$store.getters.getMenuState

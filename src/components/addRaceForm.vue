@@ -52,12 +52,22 @@ export default {
       addRace: function() {
         this.$store.dispatch('setRaceToAdd', this.tempRace)
         this.$store.dispatch('addRace')
+        this.$notify({
+          group: 'races',
+          title: 'Race added',
+          text: this.tempRace.name
+        })
         this.goToRaces()
       },
       updateRace: function (race) {
         this.$store.dispatch('setRaceToAdd', this.tempRace)
         console.log(this.$store.getters.getRaceToAdd);
         this.$store.dispatch('updateRace')
+        this.$notify({
+          group: 'races',
+          title: 'Race updated',
+          text: this.tempRace.name
+        })
         this.goToRaces()
       }
   }
