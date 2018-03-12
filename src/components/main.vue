@@ -6,6 +6,7 @@
     <menuPage v-if="menuSate.menu"></menuPage>
     <yourRaces v-if="menuSate.races"></yourRaces>
     <addRaceForm v-if="menuSate.form"></addRaceForm>
+    <calendar v-if="menuSate.calendar"></calendar>
     <achievements v-if="menuSate.achievements"></achievements>
     <stats v-if="menuSate.stats"></stats>
   </div>
@@ -16,6 +17,7 @@ import firebase from "firebase"
 import yourRaces from "./yourRaces.vue"
 import addRaceForm from "./addRaceForm.vue"
 import menuPage from "./menuPage.vue"
+import calendar from "./calendar.vue"
 import achievements from "./achievements.vue"
 import stats from "./stats.vue"
 export default {
@@ -24,6 +26,7 @@ export default {
     "yourRaces" : yourRaces,
     "menuPage" : menuPage,
     "addRaceForm" : addRaceForm,
+    "calendar" : calendar,
     "achievements" : achievements,
     "stats" : stats
   },

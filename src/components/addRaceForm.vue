@@ -44,7 +44,8 @@ export default {
           races: true,
           achievemets: false,
           stats: false,
-          form: false
+          form: false,
+          calendar: false
         }
           this.$store.dispatch('setMenuState', menuState)
         },

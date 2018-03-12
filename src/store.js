@@ -14,9 +14,11 @@ export default new Vuex.Store({
       races: false,
       achievements: false,
       stats: false,
-      form: false
+      form: false,
+      calendar: false
     },
     userRaces: [],
+    calendRaces: [],
     currentUser: {},
     addFormState: true,
     raceToAdd: {
@@ -32,6 +34,9 @@ export default new Vuex.Store({
     },
     getUserRaces: state => {
       return state.userRaces
+    },
+    getCalendRaces: state => {
+      return state.calendRaces
     },
     getMenuState: state => {
       return state.menuSate
@@ -59,6 +64,14 @@ export default new Vuex.Store({
     setRaceToAdd: (state, payload) => {
       state.raceToAdd = payload
     },
+    clearRaceToAdd: state => {
+      state.raceToAdd = {
+        name: '',
+        location: '',
+        date: '',
+        distance: 0
+      }
+    },
     addRace: (state) => {
       let userRef = state.currentUser.uid
       firebase.database().ref(userRef).push(state.raceToAdd)
@@ -76,6 +89,15 @@ export default new Vuex.Store({
         state.userRaces.push(tempRace)
       })
     },
+    setCalendRaces: state => {
+      state.calendRaces = []
+      let calendRef = 'calend'
+      firebase.database().ref(calendRef).on('child_added', snap => {
+        let tempRace = snap.val()
+        tempRace.key = snap.key
+        state.calendRaces.push(tempRace)
+      })
+    },
     removeRace: (state, payload) => {
       let userRef = state.currentUser.uid
       firebase.database().ref(userRef).child(payload.key).remove()
@@ -87,7 +109,8 @@ export default new Vuex.Store({
         races: false,
         achievemets: false,
         stats: false,
-        form: false
+        form: false,
+        calendar: false
       }
       state.userRaces = []
     }
@@ -105,12 +128,17 @@ export default new Vuex.Store({
     setUserRaces: context => {
       context.commit('setUserRaces')
     },
+    setCalendRaces: context => {
+      context.commit('setCalendRaces')
+    },
     addRace: (context) => {
       context.commit('addRace')
+      context.commit('clearRaceToAdd')
       console.log('race added')
     },
     updateRace: (context) => {
       context.commit('updateRace')
+      context.commit('clearRaceToAdd')
       console.log('race updated')
     },
     removeRace: (context, payload) => {

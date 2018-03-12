@@ -1,11 +1,9 @@
 <template>
   <div class="">
-    <h1>Your races page</h1>
+    <h1>Pick race from calendar</h1>
     <div class="yourRacesTable">
-      <h2>Your races table</h2>
       <button @click="goToMenu">Back to main menu</button>
-      <button @click="goToForm">Add new race</button>
-      <button @click="goToCalendar">Add race from calendar</button>
+      <button @click="">Add race from calendar</button>
       <table>
         <tr>
           <th class = "row-name">Race name</th>
@@ -13,15 +11,13 @@
           <th class = "row-date">Date</th>
           <th class = "row-distance">km</th>
           <th class = "row-buttons"></th>
-          <th class = "row-buttons"></th>
         </tr>
-        <tr v-for="(race, index) of userRaces" v-bind:id="race.key">
+        <tr v-for="(race, index) of calendRaces" v-bind:id="race.key">
           <td> {{ race.name }}</td>
           <td> {{ race.location }}</td>
           <td> {{ race.date }}</td>
           <td> {{ race.distance }}</td>
-          <td><button @click="removeRace(race.key, index)">Remove</button></td>
-          <td><button @click="editRace(race)">Edit</button></td>
+          <td><button @click="editRace(race)">Add race</button></td>
         </tr>
       </table>
     </div>
@@ -31,15 +27,15 @@
 <script>
 import firebase from "firebase"
 export default {
-  name: 'races',
+  name: 'calendar',
   data () {
     return {
       //
     }
     },
     computed: {
-      userRaces () {
-        return this.$store.getters.getUserRaces
+      calendRaces () {
+        return this.$store.getters.getCalendRaces
       },
       raceToAdd () {
         return this.$store.getters.getRaceToAdd
@@ -49,7 +45,7 @@ export default {
       }
     },
     created: function () {
-      this.$store.dispatch('setUserRaces')
+      this.$store.dispatch('setCalendRaces')
       //swith to add mode by default
       this.$store.dispatch('setAddFormState', true)
     },
@@ -60,21 +56,8 @@ export default {
           races: true,
           achievemets: false,
           stats: false,
-          form: false,
-          calendar: false
+          form: false
         }
-        this.$store.dispatch('setMenuState', menuState)
-      },
-      goToCalendar: function () {
-        let menuState = {
-          menu: false,
-          races: false,
-          achievemets: false,
-          stats: false,
-          form: false,
-          calendar: true
-        }
-        this.$store.dispatch('setMenuState', menuState)
       },
       goToMenu: function () {
         let menuState = {
@@ -82,8 +65,7 @@ export default {
           races: false,
           achievemets: false,
           stats: false,
-          form: true,
-          calendar: false
+          stats: true
         }
         this.$store.dispatch('setMenuState', menuState)
       },
@@ -93,15 +75,12 @@ export default {
           races: false,
           achievemets: false,
           stats: false,
-          form: true,
-          calendar: false
+          form: true
         }
           this.$store.dispatch('setMenuState', menuState)
         },
       editRace: function(race) {
         this.$store.dispatch('setRaceToAdd', race)
-        //switch to update mode
-        this.$store.dispatch('setAddFormState', false)
         this.goToForm()
       },
       removeRace: function(rKey, rIndex) {

@@ -22,7 +22,8 @@ export default {
         races: true,
         achievemets: false,
         stats: false,
-        form: false
+        form: false,
+        calendar: false
       }
         this.$store.dispatch('setMenuState', menuState)
       },
@@ -32,7 +33,8 @@ export default {
         races: false,
         achievements: true,
         stats: false,
-        form: false
+        form: false,
+        calendar: false
       }
         this.$store.dispatch('setMenuState', menuState)
       },
@@ -42,7 +44,8 @@ export default {
           races: false,
           achievements: false,
           stats: true,
-          form: false
+          form: false,
+          calendar: false
         }
           this.$store.dispatch('setMenuState', menuState)
         }
