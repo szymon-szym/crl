@@ -3,7 +3,7 @@
     <h1>Pick race from calendar</h1>
     <div class="yourRacesTable">
       <button @click="goToMenu">Back to main menu</button>
-      <button @click="">Add race from calendar</button>
+      <input v-model="filter" type="text" placeholder="search for race"/>
       <table>
         <tr>
           <th class = "row-name">Race name</th>
@@ -12,7 +12,7 @@
           <th class = "row-distance">km</th>
           <th class = "row-buttons"></th>
         </tr>
-        <tr v-for="(race, index) of calendRaces" v-bind:id="race.key">
+        <tr v-for="(race, index) of filteredRaces" v-bind:id="race.key">
           <td> {{ race.name }}</td>
           <td> {{ race.location }}</td>
           <td> {{ race.date }}</td>
@@ -30,12 +30,17 @@ export default {
   name: 'calendar',
   data () {
     return {
-      //
+      filter: ''
     }
     },
     computed: {
       calendRaces () {
         return this.$store.getters.getCalendRaces
+      },
+      filteredRaces () {
+        return this.calendRaces.filter((race) => {
+          return race.name.toLowerCase().includes(this.filter.toLowerCase())
+        })
       },
       raceToAdd () {
         return this.$store.getters.getRaceToAdd
