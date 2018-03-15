@@ -7,7 +7,7 @@
       <label>Add race name</label>
       <input type="text" placeholder="Add race name" v-model="tempRace.name"><br>
       <label>Add race date</label>
-      <input type="text" placeholder="Add race date" v-model="tempRace.date"><br>
+      <datepicker :format="pickerFormat" v-model="tempDate" ></datepicker>
       <label>Add race location</label>
       <input type="text" placeholder="Add race location" v-model="tempRace.location"><br>
       <label>Add race distance</label>
@@ -19,11 +19,18 @@
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker';
+import moment from 'moment';
+//date object from datepicker sored in tempDate. parsed to string with moment js and add/update with race
 export default {
   name: 'addRaceForm',
+  components: {
+    Datepicker
+  },
   data () {
     return {
-      tempRace : {}
+      tempRace : {},
+      tempDate: ''
     }
   },
     computed: {
@@ -36,8 +43,15 @@ export default {
     },
     created: function () {
         this.tempRace = this.raceToAdd
+        if (this.raceToAdd.date) {
+          this.tempDate = moment(this.raceToAdd.date, 'L').toDate()
+        }
+
       },
     methods: {
+      pickerFormat: function(date) {
+        return moment(date).format('L')
+      },
       goToRaces: function () {
         let menuState = {
           menu: false,
@@ -47,9 +61,12 @@ export default {
           form: false,
           calendar: false
         }
+          this.$store.dispatch('clearRaceToAdd')
           this.$store.dispatch('setMenuState', menuState)
         },
       addRace: function() {
+        //convert data obj to string and pass to tempRace
+        this.tempRace.date = moment(this.tempDate).format('L')
         this.$store.dispatch('setRaceToAdd', this.tempRace)
         this.$store.dispatch('addRace')
         this.$notify({
@@ -60,6 +77,7 @@ export default {
         this.goToRaces()
       },
       updateRace: function (race) {
+        this.tempRace.date = moment(this.tempDate).format('L')
         this.$store.dispatch('setRaceToAdd', this.tempRace)
         console.log(this.$store.getters.getRaceToAdd);
         this.$store.dispatch('updateRace')

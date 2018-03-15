@@ -22,7 +22,7 @@ export default new Vuex.Store({
     currentUser: {},
     addFormState: true,
     raceToAdd: {
-      name: 'add test',
+      name: '',
       location: '',
       date: '',
       distance: 0
@@ -135,6 +135,9 @@ export default new Vuex.Store({
       context.commit('addRace')
       context.commit('clearRaceToAdd')
       console.log('race added')
+    },
+    clearRaceToAdd: context => {
+      context.commit('clearRaceToAdd')
     },
     updateRace: (context) => {
       context.commit('updateRace')

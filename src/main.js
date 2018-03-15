@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import firebase from 'firebase'
 import Notifications from 'vue-notification'
+// import moment from 'moment'
 // import firebase from './helpers/firebase'
 import store from './store'
 
