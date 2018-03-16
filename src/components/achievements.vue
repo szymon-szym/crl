@@ -6,7 +6,6 @@
       <div class="">
 
       </div>
-      <img src="../assets/oneStar.svg" alt="oneStar">
       <img src="../assets/3stars.svg" alt="3stars">
     </div>
   </div>

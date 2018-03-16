@@ -1,12 +1,11 @@
 <template>
   <div class="">
     <h1>Your races page</h1>
+    <button @click="goToMenu">Back to main menu</button>
+    <button @click="goToForm">Add new race</button>
+    <button @click="goToCalendar">Add race from calendar</button>
     <div class="yourRacesTable">
-      <h2>Your races table</h2>
-      <button @click="goToMenu">Back to main menu</button>
-      <button @click="goToForm">Add new race</button>
-      <button @click="goToCalendar">Add race from calendar</button>
-      <table>
+      <!-- <table>
         <tr>
           <th class = "row-name">Race name</th>
           <th class = "row-location">Location</th>
@@ -14,16 +13,16 @@
           <th class = "row-distance">km</th>
           <th class = "row-buttons"></th>
           <th class = "row-buttons"></th>
-        </tr>
-        <tr v-for="(race, index) of userRaces" v-bind:id="race.key">
-          <td> {{ race.name }}</td>
-          <td> {{ race.location }}</td>
-          <td> {{ race.date }}</td>
-          <td> {{ race.distance }}</td>
-          <td><button @click="removeRace(race.key, index, race.name)">Remove</button></td>
-          <td><button @click="editRace(race)">Edit</button></td>
-        </tr>
-      </table>
+        </tr> -->
+        <div class="raceCard" v-for="(race, index) of userRaces" v-bind:id="race.key">
+          <h3 > {{ race.name }} </h3>
+          <div class="location">Location: {{ race.location }}</div>
+          <div class="date">Date: {{ race.date }}</div>
+          <div class="distance">Distance: {{ race.distance }}</div>
+          <div><button @click="removeRace(race.key, index, race.name)">Remove</button></div>
+          <div><button @click="editRace(race)">Edit</button></div>
+        </div>
+      <!-- </table> -->
     </div>
   </div>
 </template>
@@ -124,57 +123,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/* * {
-  border: solid thin red;
-} */
-
-h1, h2 {
-  font-weight: normal;
+.yourRacesTable {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-row-gap: 15px;
+  grid-column-gap: 15px;
 }
-.addRaceForm {
-  width: 80%;
-  margin: auto;
-  padding: 20px;
+.raceCard {
+  padding: 10px;
   border: solid thin grey;
-  border-radius: 8px;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-table {
-  table-layout: fixed;
-  width: 90%;
-  white-space: nowrap;
-  margin: 0 auto;
-}
-td {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 5px;
-}
-td, th {
-  text-align: left;
-  pading: 5px;
-}
-tr:nth-child(even) {
-  background: lightblue;
-}
-.row-name {
-  width: 35%;
-}
-.row-location {
-  width: 20%;
-}
-.row-date {
-  width: 18%;
-}
-.row-distance {
-  width: 12%;
-}
-.row-buttons {
-  width: 15%;
+  border-radius: 10px;
 }
 
 </style>

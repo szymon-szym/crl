@@ -1,6 +1,5 @@
 <template>
   <div class="">
-    <h1>{{ getMsg }}</h1>
     <p> Hello {{ currentUser.uid }} !</p>
     <button @click="singout">singout</button>
     <menuPage v-if="menuSate.menu"></menuPage>

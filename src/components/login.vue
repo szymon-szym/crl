@@ -1,6 +1,9 @@
 <template>
   <div class="login">
     <h1> {{ title }} </h1>
+    <p>Enter with Google</p>
+    <img @click="loginGoogle" src="../assets/btn_google_light_normal_ios.svg" alt="googleBtn">
+    <p>Enter with email</p>
     <input type="text" v-model="email" placeholder="user mail" value="">
     <input type="password" v-model="password" placeholder="user password" value="">
     <button v-on:click="login">Enter</button>
@@ -30,6 +33,26 @@ export default {
         alert(error.message);
         var errorCode = error.code;
         var errorMessage = error.message;
+        // ...
+      });
+    },
+    loginGoogle: function () {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase.auth().signInWithRedirect(provider).then( result => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        this.$router.replace("main");
+        // ...
+      }).catch(error => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
         // ...
       });
     }
