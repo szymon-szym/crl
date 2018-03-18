@@ -1,7 +1,7 @@
 <template>
   <div class="">
-    <button @click="goToMenu">Bak to main menu</button>
     <h2>League stats</h2>
+    <button @click="goToMenu">Bak to main menu</button>
   </div>
 </template>
 

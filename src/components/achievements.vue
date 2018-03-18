@@ -1,12 +1,17 @@
 <template>
   <div class="">
-    <button @click="goToMenu">Bak to main menu</button>
     <h2>Here you can find your cool achievements</h2>
+    <button @click="goToMenu">Bak to main menu</button>
     <div class="badges">
-      <div class="">
-
+      <div class="achCont">
+        <img src="../assets/trophy_color.svg" alt="3stars">
       </div>
-      <img src="../assets/3stars.svg" alt="3stars">
+      <div class="achCont">
+        <img src="../assets/trophy_color.svg" alt="3stars">
+      </div>
+      <div class="achCont">
+        <img src="../assets/trophy_color.svg" alt="3stars">
+      </div>
     </div>
   </div>
 </template>
@@ -55,18 +60,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
+h2 {
   font-weight: normal;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.badges {
+  display: flex;
+  flex-wrap: row wrap;
+  align-items: center;
+  justify-content: space-around;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.achCont {
+  margin-top: 30px;
 }
 </style>

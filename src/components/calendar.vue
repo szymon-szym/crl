@@ -70,7 +70,7 @@ export default {
           races: false,
           achievemets: false,
           stats: false,
-          stats: true
+          form: false
         }
         this.$store.dispatch('setMenuState', menuState)
       },
@@ -123,7 +123,8 @@ h1, h2 {
 }
 table {
   table-layout: fixed;
-  width: 100%;
+  width: 90%;
+  margin: auto;
   white-space: nowrap;
 }
 td {

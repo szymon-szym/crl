@@ -15,12 +15,20 @@
           <th class = "row-buttons"></th>
         </tr> -->
         <div class="raceCard" v-for="(race, index) of userRaces" v-bind:id="race.key">
-          <h3 > {{ race.name }} </h3>
-          <div class="location">Location: {{ race.location }}</div>
-          <div class="date">Date: {{ race.date }}</div>
-          <div class="distance">Distance: {{ race.distance }}</div>
-          <div><button @click="removeRace(race.key, index, race.name)">Remove</button></div>
-          <div><button @click="editRace(race)">Edit</button></div>
+          <div class="points">
+            <p> {{ race.distance }} points </p>
+          </div>
+          <div class="cardBody">
+            <p class="name">
+            {{ race.name }},
+            <!-- {{ race.location }} -->
+            {{ race.date }},
+            {{ race.distance }} km </p>
+          </div>
+          <div class="cardButtons">
+            <button @click="editRace(race)">Edit</button>
+            <button @click="removeRace(race.key, index, race.name)">Remove</button>
+          </div>
         </div>
       <!-- </table> -->
     </div>
@@ -126,14 +134,46 @@ export default {
 .yourRacesTable {
   padding: 15px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 400px 1fr;
   grid-row-gap: 15px;
   grid-column-gap: 15px;
+  justify-items: center;
 }
 .raceCard {
-  padding: 10px;
-  border: solid thin grey;
+  background-color: lightGrey;
   border-radius: 10px;
+  grid-column: 2 / 3;
+  display: flex;
+  width: 400px;
+  grid-template-columns: 1fr 3fr;
+  grid-auto-rows: 1fr 1fr;
+  /* shadows */
+  -webkit-box-shadow: 10px 10px 15px -5px rgba(194,190,194,1);
+  -moz-box-shadow: 10px 10px 15px -5px rgba(194,190,194,1);
+  box-shadow: 10px 10px 15px -5px rgba(194,190,194,1);
 }
+.points {
+  border-radius: 10px 0 0 10px;
+  width: 100px;
+  background-color: cornflowerBlue;
+  padding: 8px;
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+.cardBody {
+  display: flex;
+  width: 200px;
+  padding: 5px;
+  text-align: left;
 
+}
+.cardButtons {
+  width: 100px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
 </style>

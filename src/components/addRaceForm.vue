@@ -3,7 +3,7 @@
     <h1>Add/Edit/Submit</h1>
     <div class="addRaceForm" >
       <button @click="goToRaces">Back</button>
-      <h2>Add custom race</h2>
+      <h3>Add custom race</h3>
       <label>Add race name</label>
       <input type="text" placeholder="Add race name" v-model="tempRace.name"><br>
       <label>Add race date</label>

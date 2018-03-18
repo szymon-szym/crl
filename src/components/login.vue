@@ -37,7 +37,7 @@ export default {
       });
     },
     loginGoogle: function () {
-      const provider = new firebase.auth.GoogleAuthProvider()
+      let provider = new firebase.auth.GoogleAuthProvider()
       firebase.auth().signInWithRedirect(provider).then( result => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken;

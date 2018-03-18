@@ -1,7 +1,9 @@
 <template>
-  <div class="">
-    <p> Hello {{ currentUser.uid }} !</p>
-    <button @click="singout">singout</button>
+  <div class="mainPage">
+    <div class="header">
+      <p> {{ currentUser.email }} </p>
+      <button class="outBtn" @click="singout">Singout</button>
+    </div>
     <menuPage v-if="menuSate.menu"></menuPage>
     <yourRaces v-if="menuSate.races"></yourRaces>
     <addRaceForm v-if="menuSate.form"></addRaceForm>
@@ -54,7 +56,7 @@ export default {
           this.$router.replace("login")
           this.$store.dispatch('clearData')
         }).catch(function(error) {
-          // An error happened.
+          // error
         });
     }
   }
@@ -63,16 +65,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+.header {
+  background-color: cadetblue;
+  padding: 5px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
+.outBtn {
+  margin: 5px 5px 5px 5px;
 }
 a {
   color: #42b983;
