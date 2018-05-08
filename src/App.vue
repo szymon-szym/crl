@@ -1,12 +1,23 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <!-- <div id="nav">
+      <router-link to="/home">Home</router-link> |
+      <router-link to="/races">Races</router-link> |
+      <router-link to="/achievements">Ach</router-link> |
+      <router-link to="/stats">Stats</router-link> |
+      <router-link to="/calendar">Calendar</router-link> |
+    </div> -->
     <router-view/>
+    <notifications group="races" position="bottom right" />
   </div>
 </template>
+
+<script>
+export default {
+  //
+}
+</script>
+
 
 <style>
 #app {
