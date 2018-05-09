@@ -87,9 +87,9 @@ export default new Vuex.Store({
     setAddFormState: (context, payload) => {
       context.commit('setAddFormState', payload)
     },
-    setCalendRaces: context => {
-      context.commit('setCalendRaces')
-    },
+    // setCalendRaces: context => {
+    //   context.commit('setCalendRaces')
+    // },
     addRace: (context, race) => {
       //updated races have .key/key property, which is indefined
       //for new ones, so I need to delete this properties from raceToAdd object
@@ -120,16 +120,6 @@ export default new Vuex.Store({
     clearData: context => {
       context.commit('clearData')
     },
-    // fetchUserData: context => {
-    //   let user = firebase.auth().currentUser.uid;
-    //   context.commit('setUser');
-    //   fireFetch.fetchUserRaces(user)
-    //   .then(races => context.commit('setUserRaces', races));
-    //   fireFetch.fetchVerUsers()
-    //   .then(verUsers => {
-    //     context.commit('setVerUsers', verUsers)
-    //   })
-    // },
     setUserRaces: context => {
       let ref = firebase.database().ref('userRaces/'+ firebase.auth().currentUser.uid);
       context.dispatch('fetchUserRaces', ref);

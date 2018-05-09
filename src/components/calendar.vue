@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     calendRaces () {
-      return this.$store.getters.getCalendRaces
+      return JSON.parse(JSON.stringify(this.$store.getters.getCalendRaces))
     },
     filteredRaces () {
       return this.calendRaces.filter((race) => {
@@ -71,7 +71,7 @@ export default {
       return this.$store.getters.getStartDate
     }
   },
-  created: function () {
+  created() {
      if (this.calendRaces.length==0) {
           //if user will enter manually this route check if data is already there
           //and fetch if not 

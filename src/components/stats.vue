@@ -41,7 +41,10 @@ export default {
     }
   },
   watch: {
-    //
+    userRaces: function () { this.animeUR() },
+    userPoints: function () { this.animeUP() },
+    verPoints: function () { this.animeVP() },
+    verRaces: function () { this.animeVR() }
   },
   computed: {
     userRaces () {
@@ -103,7 +106,7 @@ export default {
               (this.verPoints - this.userPoints),
               (1200- (this.userPoints + this.verPoints))
             ],
-            backgroundColor: ["green", "cadetBlue", "lightGrey"]
+            backgroundColor: ["blue", "cadetBlue", "lightGrey"]
           }],
          // These labels appear in the legend and in the tooltips when hovering different arcs
           labels: [
@@ -115,17 +118,8 @@ export default {
         }
       }
     },
-  created: function () {
-      if (this.userRaces.length==0) {
-          //if user will enter manually this route check if data is already there
-          //and fetch if not 
-          //passing firebase ref for Vuexfire actions
-          this.$store.dispatch('setAllRacesRef', firebase.database().ref('userRaces'))
-          this.$store.dispatch('setCalendRacesRef', firebase.database().ref('calend'))
-          this.$store.dispatch('setVerUsers', firebase.database().ref('verifiedUsers'))
-          this.$store.dispatch('setUserRaces')
-          this.$store.commit('setUser')
-       }
+  created () {
+    this.$store.dispatch('setAllRacesRef', firebase.database().ref('userRaces'))
     },
   mounted: function () {
     this.animeUR()

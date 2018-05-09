@@ -15,19 +15,19 @@
       <div class="contentWrapper" v-if="!intro">
         <h1> Charity Running League!</h1>
         <h2> Please log in </h2>
-        <div class="form" v-if="!register">
-          <div class="enterBtn" @click="loginGoogle" >
+        <div class="form">
+          <button class="enterBtn" @click="loginGoogle" >
             <img src="../assets/login/Google-favicon-2015.png" alt="googleBtn">
             <div class="btnTxt">Continue with Google</div>
-          </div>
-          <div class="enterBtn" @click="emailForm = !emailForm" >
+          </button>        
+          <button class="enterBtn" @click="emailForm = !emailForm" >
             <img src="../assets/login/email1.svg" alt="emailBtn">
-            <div class="btnTxt">Login with mail</div>
-          </div>
+            <div class="btnTxt">Use your login</div>
+          </button>
           <transition name="fade">
             <div class="emailForm" v-if="emailForm">
-              <input type="text" v-model="email" placeholder="user mail" value="">
-              <input type="password" v-model="password" placeholder="user password" value="">
+              <input type="text" v-model="email" placeholder="user login (no special chars)" value="">
+              <input type="password" v-model="password" placeholder="user password (min 6 chars)" value="">
               <div class="buttonsWrapper">
                 <div class="button" @click="login">Enter</div>
                 <span>or</span>
@@ -74,7 +74,7 @@ export default {
   },
   methods : {
     login : function () {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+      firebase.auth().signInWithEmailAndPassword((this.email + '@mail.com'), this.password).then(
         (user) => {
           this.$router.replace("home");
         },
@@ -86,7 +86,8 @@ export default {
       });
     },
     registerF: function () {
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+      
+      firebase.auth().createUserWithEmailAndPassword((this.email + '@mail.com'), this.password).then(
         (user) => {
             this.$router.replace("home")
           },
@@ -189,6 +190,9 @@ a {
   box-shadow: 10px 10px 15px -5px rgba(194,190,194,1);
 }
 /* google btn */
+button {
+  all: unset;
+}
 .enterBtn {
   font-family: 'Roboto', sans-serif;
   margin: 0px 0px 10px 0px;
@@ -200,7 +204,11 @@ a {
   align-items: center;
   cursor: default;
 }
-.enterBtn:hover {
+.enterBtn:hover  {
+  border-color: darkBlue;
+  cursor: default;
+}
+.enterBtn:active  {
   border-color: darkBlue;
   cursor: default;
 }

@@ -49,6 +49,12 @@ export default {
     },
     userRaces() {
       return this.$store.getters.getUserRaces
+    },
+    calendRaces() {
+      return JSON.parse(JSON.stringify(this.$store.getters.getCalendRaces))
+    },
+    allRaces() {
+       return JSON.parse(JSON.stringify(this.$store.getters.getAllRaces))
     }
   },
   created() {
@@ -58,7 +64,8 @@ export default {
     this.$store.dispatch('setVerUsers', firebase.database().ref('verifiedUsers'))
     this.$store.dispatch('setUserRaces')
     this.$store.commit('setUser')
-
+  console.log(this.allRaces )
+  console.log(this.calendRaces )
   },
   methods: {
     goTo: function(location) {

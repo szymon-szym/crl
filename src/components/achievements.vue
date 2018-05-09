@@ -68,7 +68,6 @@
 
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -119,9 +118,6 @@ export default {
         return true
       }
     }
-  },
-  created: function () {
-    //
   },
   created: function() {
      if (this.userRaces.length==0) {
