@@ -61,23 +61,10 @@ export default new Vuex.Store({
         distance: 0
       }
     },
-    addRace: (state) => {
-      //updated races have .key/key property, which is indefined
-      //for new ones, so I need to delete this properties from raceToAdd object
-      //to avoid firebase error
-      delete state.raceToAdd.key
-      delete state.raceToAdd['.key']
-      let userRef = 'userRaces/' + state.currentUser.uid
-      firebase.database().ref(userRef).push(state.raceToAdd)
-    },
     updateRace: (state) => {
       let updateRef = 'userRaces/' + state.currentUser.uid + '/' + state.raceToAdd.key
       firebase.database().ref(updateRef).update(state.raceToAdd)
     },
-    // setUserRaces: (state, payload) => state.userRaces = payload,
-    // setVerUsers: (state, users) => state.verUsers = users,
-    // setVerRaces: (state, races) => state.verRaces = races,
-    // setAllRaces: (state, races) => state.allRaces = races,
     setStartDate: (state, days) => {
       if (days === 7) {
         let newDate = moment().subtract(7, 'd')
@@ -93,11 +80,6 @@ export default new Vuex.Store({
       }
       else { state.startDate = '01/01/2018'}
     },
-    removeRace: (state, payload) => {
-      let userRef = 'userRaces/' + state.currentUser.uid
-      firebase.database().ref(userRef).child(payload.key).remove()
-      state.userRaces.splice(payload.index, 1)
-    },
     clearData: state => state.userRaces = []
   },
   // ***********************************
@@ -108,8 +90,15 @@ export default new Vuex.Store({
     setCalendRaces: context => {
       context.commit('setCalendRaces')
     },
-    addRace: (context) => {
-      context.commit('addRace')
+    addRace: (context, race) => {
+      //updated races have .key/key property, which is indefined
+      //for new ones, so I need to delete this properties from raceToAdd object
+      //to avoid firebase error
+      delete race.key
+      delete race['.key']
+      let user = firebase.auth().currentUser
+      let userRef = 'userRaces/' + user.uid
+      firebase.database().ref(userRef).push(race)
       context.commit('clearRaceToAdd')
       console.log('race added')
     },
@@ -141,7 +130,7 @@ export default new Vuex.Store({
     //     context.commit('setVerUsers', verUsers)
     //   })
     // },
-    setUserRef: context => {
+    setUserRaces: context => {
       let ref = firebase.database().ref('userRaces/'+ firebase.auth().currentUser.uid);
       context.dispatch('fetchUserRaces', ref);
     } ,

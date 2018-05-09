@@ -31,26 +31,7 @@ export default {
     }
   },
   watch: {
-    verRaces: function (newVal) {
-        console.log('change race');
-        anime({
-          targets: this.animRaces,
-          races: this.verRaces.length,
-          round: 1,
-          easing: 'linear',
-          duration: 1500
-        })
-    },
-    verPoints: function (newVal) {
-      console.log('change points');
-      anime({
-        targets: this.animPoints,
-        points: this.verPoints,
-        round: 1,
-        easing: 'linear',
-        duration: 2500
-      })
-    }
+    //
   },
   computed: {
     userRaces () {
@@ -103,7 +84,16 @@ export default {
       }
     },
   created: function () {
-      // this.verRaces()
+      if (this.userRaces.length==0) {
+          //if user will enter manually this route check if data is already there
+          //and fetch if not 
+          //passing firebase ref for Vuexfire actions
+          this.$store.dispatch('setAllRacesRef', firebase.database().ref('userRaces'))
+          this.$store.dispatch('setCalendRacesRef', firebase.database().ref('calend'))
+          this.$store.dispatch('setVerUsers', firebase.database().ref('verifiedUsers'))
+          this.$store.dispatch('setUserRaces')
+          this.$store.commit('setUser')
+       }
     },
   mounted: function () {
     this.animeUR()

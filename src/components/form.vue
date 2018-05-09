@@ -69,94 +69,94 @@ export default {
       },
       addFormState () {
         return this.$store.getters.getAddFormState
+      },
+    },
+  created: function () {
+      this.tempRace = this.raceToAdd
+      if (this.raceToAdd.date) {
+        this.tempDate = moment(this.raceToAdd.date, 'l').toDate()
+      }
+      this.tempRace.key = this.tempRace['.key']
+      console.log(this.tempRace.key)
+    },
+  methods: {
+    pickerFormat: function(date) {
+      return moment(date).format('l')
+    },
+    goTo: function(location) {
+      this.$store.dispatch('clearRaceToAdd')
+      this.$router.push(`/${location}`)
+    },
+    validate: function () {
+      //check name
+      if (this.tempRace.name==='') {
+        this.errMessage.name = "race name is required"
+        this.err.name = true
+      }
+      else { this.err.name = false }
+      //check date
+      if (this.tempDate==='') {
+        this.errMessage.date = "race date is required"
+        this.err.date = true
+      }
+      else { this.err.date = false }
+      //check location
+      if (this.tempRace.location==='') {
+        this.errMessage.location = "race location is required"
+        this.err.location = true
+      }
+      else { this.err.location = false }
+      //check distance
+      if (isNaN(this.tempRace.distance)) {
+        this.errMessage.distance = "race distance is required as a number"
+        this.err.distance = true
+      }
+      else if (this.tempRace.distance===0){
+        this.errMessage.distance = "race distance should be minimum 1 km"
+        this.err.distance = true
+      }
+      else {
+        this.tempRace.distance = Math.floor(this.tempRace.distance)
+        console.log(this.tempRace.distance);
+        this.err.distance = false
       }
     },
-    created: function () {
-        this.tempRace = this.raceToAdd
-        if (this.raceToAdd.date) {
-          this.tempDate = moment(this.raceToAdd.date, 'l').toDate()
-        }
-        this.tempRace.key = this.tempRace['.key']
-        console.log(this.tempRace.key)
-      },
-    methods: {
-      pickerFormat: function(date) {
-        return moment(date).format('l')
-      },
-      goTo: function(location) {
-        this.$store.dispatch('clearRaceToAdd')
-        this.$router.push(`/${location}`)
-      },
-      validate: function () {
-        //check name
-        if (this.tempRace.name==='') {
-          this.errMessage.name = "race name is required"
-          this.err.name = true
-        }
-        else { this.err.name = false }
-        //check date
-        if (this.tempDate==='') {
-          this.errMessage.date = "race date is required"
-          this.err.date = true
-        }
-        else { this.err.date = false }
-        //check location
-        if (this.tempRace.location==='') {
-          this.errMessage.location = "race location is required"
-          this.err.location = true
-        }
-        else { this.err.location = false }
-        //check distance
-        if (isNaN(this.tempRace.distance)) {
-          this.errMessage.distance = "race distance is required as a number"
-          this.err.distance = true
-        }
-        else if (this.tempRace.distance===0){
-          this.errMessage.distance = "race distance should be minimum 1 km"
-          this.err.distance = true
-        }
-        else {
-          this.tempRace.distance = Math.floor(this.tempRace.distance)
-          console.log(this.tempRace.distance);
-          this.err.distance = false
-        }
-      },
-      addRace: function() {
-        this.validate();
-        if ((this.err.name==false)&&(this.err.date==false)&&(this.err.location==false)&&(this.err.distance==false)) {
-          // convert data obj to string and pass to tempRace
-          this.tempRace.date = moment(this.tempDate).format('l')
-          this.$store.dispatch('setRaceToAdd', this.tempRace)
-          this.$store.dispatch('addRace')
-          this.$notify({
-            group: 'races',
-            title: 'Race added',
-            text: this.tempRace.name,
-            type: 'success'
-          })
-          this.$store.dispatch('setUserRef')
-          this.goTo('races')
-        }
-        else {console.log('error')}
-      },
-      updateRace: function (race) {
-        this.validate();
-        if ((this.err.name==false)&&(this.err.date==false)&&(this.err.location==false)&&(this.err.distance==false)) {
-          this.tempRace.date = moment(this.tempDate).format('l')
-          //after parsing firebase ref to json key is lef in .key format. I need to delete it to update this record in database
-          delete this.tempRace['.key']
-          this.$store.dispatch('setRaceToAdd', this.tempRace)
-          this.$store.dispatch('updateRace')
-          this.$notify({
-            group: 'races',
-            title: 'Race updated',
-            text: this.tempRace.name,
-            type: 'warn'
-          })
-          this.goTo('races')
-        }
-        else {console.log('error')}
+    addRace: function() {
+      this.validate();
+      if ((this.err.name==false)&&(this.err.date==false)&&(this.err.location==false)&&(this.err.distance==false)) {
+        // convert data obj to string and pass to tempRace
+        this.tempRace.date = moment(this.tempDate).format('l')
+        this.$store.dispatch('setRaceToAdd', this.tempRace)
+        this.$store.dispatch('addRace', this.tempRace)
+        this.$notify({
+          group: 'races',
+          title: 'Race added',
+          text: this.tempRace.name,
+          type: 'success'
+        })
+        this.$store.dispatch('setUserRef')
+        this.goTo('races')
       }
+      else {console.log('error')}
+    },
+    updateRace: function (race) {
+      this.validate();
+      if ((this.err.name==false)&&(this.err.date==false)&&(this.err.location==false)&&(this.err.distance==false)) {
+        this.tempRace.date = moment(this.tempDate).format('l')
+        //after parsing firebase ref to json key is lef in .key format. I need to delete it to update this record in database
+        delete this.tempRace['.key']
+        this.$store.dispatch('setRaceToAdd', this.tempRace)
+        this.$store.dispatch('updateRace')
+        this.$notify({
+          group: 'races',
+          title: 'Race updated',
+          text: this.tempRace.name,
+          type: 'warn'
+        })
+        this.goTo('races')
+      }
+      else {console.log('error')}
+    }
   }
 }
 </script>

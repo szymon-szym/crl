@@ -88,43 +88,55 @@ export default {
         }
     }
   },
-    computed: {
-      currentUser () {
-        return this.$store.getters.getUser
-      },
-      userRaces () {
-        return this.$store.getters.getUserRaces
-      },
-      userPoints () {
-        let points = 0
-        for (let race of this.userRaces) {
-          points += race.distance
-        }
-        return points
-      },
-      ach1 () {
-        console.log(this.userRaces.length)
-        if (this.userRaces.length) {
-          return true
-        }
-      },
-      ach2 () {
-        console.log(this.userPoints)
-        if (this.userPoints > 20) {
-          return true
-        }
-      },
-      ach3 () {
-        if (this.userRaces.length >= 3) {
-          return true
-        }
+  computed: {
+    currentUser () {
+      return this.$store.getters.getUser
+    },
+    userRaces () {
+      return this.$store.getters.getUserRaces
+    },
+    userPoints () {
+      let points = 0
+      for (let race of this.userRaces) {
+        points += race.distance
+      }
+      return points
+    },
+    ach1 () {
+      console.log(this.userRaces.length)
+      if (this.userRaces.length) {
+        return true
       }
     },
-    created: function () {
-      //
+    ach2 () {
+      console.log(this.userPoints)
+      if (this.userPoints > 20) {
+        return true
+      }
     },
-    methods: {
-      //
+    ach3 () {
+      if (this.userRaces.length >= 3) {
+        return true
+      }
+    }
+  },
+  created: function () {
+    //
+  },
+  created: function() {
+     if (this.userRaces.length==0) {
+          //if user will enter manually this route check if data is already there
+          //and fetch if not 
+          //passing firebase ref for Vuexfire actions
+          this.$store.dispatch('setAllRacesRef', firebase.database().ref('userRaces'))
+          this.$store.dispatch('setCalendRacesRef', firebase.database().ref('calend'))
+          this.$store.dispatch('setVerUsers', firebase.database().ref('verifiedUsers'))
+          this.$store.dispatch('setUserRaces')
+          this.$store.commit('setUser')
+       }
+  }, 
+  methods: {
+    //
   }
 }
 </script>

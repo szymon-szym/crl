@@ -52,18 +52,18 @@ export default {
     }
   },
   created() {
-    // this.$store.dispatch('fetchUserData')
+    //passing firebase ref for Vuexfire actions
     this.$store.dispatch('setAllRacesRef', firebase.database().ref('userRaces'))
     this.$store.dispatch('setCalendRacesRef', firebase.database().ref('calend'))
     this.$store.dispatch('setVerUsers', firebase.database().ref('verifiedUsers'))
-    this.$store.dispatch('setUserRef')
+    this.$store.dispatch('setUserRaces')
     this.$store.commit('setUser')
 
   },
   methods: {
     goTo: function(location) {
       this.$router.push(`/${location}`)
-    } //
+    } 
   }
 }
 </script>

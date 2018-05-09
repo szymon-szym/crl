@@ -50,68 +50,77 @@ export default {
       }
     }
   },
-    computed: {
-      calendRaces () {
-        return this.$store.getters.getCalendRaces
-      },
-      filteredRaces () {
-        return this.calendRaces.filter((race) => {
-          if (race.name.toLowerCase().includes(this.filter.toLowerCase())){
-            return race.name.toLowerCase().includes(this.filter.toLowerCase())
-          }
-          else if (race.location.toLowerCase().includes(this.filter.toLowerCase())){
-            return race.location.toLowerCase().includes(this.filter.toLowerCase())
-          }
-        })
-      },
-      raceToAdd () {
-        return this.$store.getters.getRaceToAdd
-      },
-      startDate () {
-        return this.$store.getters.getStartDate
-      }
+  computed: {
+    calendRaces () {
+      return this.$store.getters.getCalendRaces
     },
-    created: function () {
-      // this.$store.dispatch('setCalendRaces')
-      this.$store.commit('setStartDate', 'all')
-      //swith to add mode by default
-      this.$store.dispatch('setAddFormState', true)
+    filteredRaces () {
+      return this.calendRaces.filter((race) => {
+        if (race.name.toLowerCase().includes(this.filter.toLowerCase())){
+          return race.name.toLowerCase().includes(this.filter.toLowerCase())
+        }
+        else if (race.location.toLowerCase().includes(this.filter.toLowerCase())){
+          return race.location.toLowerCase().includes(this.filter.toLowerCase())
+        }
+      })
     },
-    methods: {
-      goTo: function(location) {
-      this.$router.push(`/${location}`)
-      },
-      range: function(date) {
-        let momentDate = moment(date, 'l').toDate()
-        if (moment(momentDate).isBetween(this.startDate, this.endDate)) {
-          return true
-        }
-      },
-      setBtnState : function (btn) {
-        let obj = this.btnState
-        for (let key in obj) {
-          if (obj.hasOwnProperty(key)) {
-            obj[key] = null
-          }
-        }
-        this.btnState[btn] = true;
-      },
-      setStartDate : function (days) {
-        this.$store.commit('setStartDate', days)
-      },
-      editRace: function(race) {
-        this.$store.dispatch('setRaceToAdd', race)
-        this.goTo('form')
-      },
-      removeRace: function(rKey, rIndex) {
-        let removeData = {
-          key: rKey,
-          index: rIndex
-          };
-        this.$store.dispatch('removeRace', removeData)
-        this.goTo('races')
-      }
+    raceToAdd () {
+      return this.$store.getters.getRaceToAdd
+    },
+    startDate () {
+      return this.$store.getters.getStartDate
     }
+  },
+  created: function () {
+     if (this.calendRaces.length==0) {
+          //if user will enter manually this route check if data is already there
+          //and fetch if not 
+          //passing firebase ref for Vuexfire actions
+          this.$store.dispatch('setAllRacesRef', firebase.database().ref('userRaces'))
+          this.$store.dispatch('setCalendRacesRef', firebase.database().ref('calend'))
+          this.$store.dispatch('setVerUsers', firebase.database().ref('verifiedUsers'))
+          this.$store.dispatch('setUserRaces')
+          this.$store.commit('setUser')
+       }
+    this.$store.commit('setStartDate', 'all')
+    //swith to add mode by default
+    this.$store.dispatch('setAddFormState', true)
+  },
+  methods: {
+    goTo: function(location) {
+    this.$router.push(`/${location}`)
+    },
+    range: function(date) {
+      let momentDate = moment(date, 'l').toDate()
+      if (moment(momentDate).isBetween(this.startDate, this.endDate)) {
+        return true
+      }
+    },
+    setBtnState : function (btn) {
+      let obj = this.btnState
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          obj[key] = null
+        }
+      }
+      this.btnState[btn] = true;
+    },
+    setStartDate : function (days) {
+      this.$store.commit('setStartDate', days)
+    },
+    editRace: function(race) {
+      this.$store.dispatch('setRaceToAdd', race)
+      this.goTo('form')
+    },
+    removeRace: function(rKey, rIndex) {
+      let removeData = {
+        key: rKey,
+        index: rIndex
+        };
+      this.$store.dispatch('removeRace', removeData)
+      this.goTo('races')
+    }
+  }
 }
 </script>
 
