@@ -38,7 +38,6 @@ export default {
       animRaces: {races : 0},
       animUserPoints: {points: 0},
       animUserRaces: {races: 0},
-     
     }
   },
   watch: {
@@ -86,9 +85,11 @@ export default {
       return verTempRaces
     },
     verPoints () {
-      // let points = this.verRaces.reduce((prev, curr) => {return prev + curr.distance})
-      // console.log(points)
-      // return points
+      let points = null
+      for (let race of (this.verRaces)) {
+        points += race.distance
+      }
+      return points
     },
     nbUsers () {
       return this.verUsers.length
@@ -99,8 +100,8 @@ export default {
          datasets: [{
             data: [
               this.userPoints,
-              (this.userPoints*10),
-              (1200-this.userPoints)
+              (this.verPoints - this.userPoints),
+              (1200- (this.userPoints + this.verPoints))
             ],
             backgroundColor: ["green", "cadetBlue", "lightGrey"]
           }],
@@ -113,17 +114,6 @@ export default {
       
         }
       }
-    //  dChartOptions() {
-    //    return {datasets: [{
-    //         data: [this.userPoints, 20, (1200-this.userPoints)]
-    //     }],
-    //     // These labels appear in the legend and in the tooltips when hovering different arcs
-    //     labels: [
-    //         'Your points',
-    //         'Yellow',
-    //         'Blue'
-    //     ]}
-    //   }
     },
   created: function () {
       if (this.userRaces.length==0) {
@@ -141,6 +131,7 @@ export default {
     this.animeUR()
     this.animeUP()
     this.animeVR()
+    this.animeVP()
   },
   methods: {
     animeUR () {
@@ -149,7 +140,7 @@ export default {
         races: this.userRaces.length,
         round: 1,
         easing: 'linear',
-        duration: 1500
+        duration: 1000
       })
     },
     animeUP () {
@@ -158,7 +149,16 @@ export default {
         points: this.userPoints,
         round: 1,
         easing: 'linear',
-        duration: 2500
+        duration: 1500
+      })
+    },
+    animeVP () {
+      anime({
+        targets: this.animPoints,
+        points: this.verPoints,
+        round: 1,
+        easing: 'linear',
+        duration: 1500
       })
     },
     animeVR () {
@@ -167,7 +167,7 @@ export default {
         races: this.verRaces.length,
         round: 1,
         easing: 'linear',
-        duration: 2500
+        duration: 1000
       })
     },
   }
