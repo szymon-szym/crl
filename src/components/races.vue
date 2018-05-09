@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="yourRacesTable">
-        <div class="raceCard" v-for="(race, index) of userRaces" v-bind:id="race['.key']">
+        <div class="raceCard" v-for="(race, index) of userRaces" v-bind:key="race['.key']">
           <div class="points">
             <p> {{ race.distance }} points </p>
           </div>
