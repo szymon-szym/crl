@@ -40,9 +40,7 @@ export default new Vuex.Store({
     getRaceToAdd: state => state.raceToAdd,
     getAddFormState: state => state.addFormState,
     getStartDate: state => state.startDate,
-    getUser: state => {
-      return state.currentUser
-    }
+    getUser: state => state.currentUser,
   },
   mutations: {
     ...firebaseMutations,
@@ -65,7 +63,7 @@ export default new Vuex.Store({
     },
     addRace: (state) => {
       //updated races have .key/key property, which is indefined
-      //for new ones, so I need to delete this properties
+      //for new ones, so I need to delete this properties from raceToAdd object
       //to avoid firebase error
       delete state.raceToAdd.key
       delete state.raceToAdd['.key']
@@ -124,7 +122,8 @@ export default new Vuex.Store({
       // console.log('race updated')
     },
     removeRace: (context, payload) => {
-      context.commit('removeRace', payload)
+      let userRef = 'userRaces/' + payload.user.uid
+      firebase.database().ref(userRef).child(payload.key).remove()
     },
     setRaceToAdd: (context, payload) => {
       context.commit('setRaceToAdd', payload)

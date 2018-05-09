@@ -66,8 +66,8 @@ export default {
       raceToAdd () {
         return this.$store.getters.getRaceToAdd
       },
-      getUser: state => {
-        return state.currentUser
+      getUser () {
+        return this.$store.getters.getUser
       }
     },
     created: function () {
@@ -86,7 +86,8 @@ export default {
       removeRace: function(rKey, rIndex, name) {
         let removeData = {
           key: rKey,
-          index: rIndex
+          index: rIndex,
+          user: this.getUser
           };
         this.$store.dispatch('removeRace', removeData)
         this.$notify({
@@ -189,8 +190,5 @@ h2, h3 {
   border-color: darkblue;
   cursor: default;
 }
-@media (min-width: 600px) {
-  .menu {
-  }
-}
+
 </style>
