@@ -6,6 +6,14 @@
     <hr>
     <h2>League stats</h2>
     <h3>We have {{ nbUsers }} verified users with {{animRaces.races}} races and {{ animPoints.points }} points (out of 1200)</h3>
+    <div class='chartWrapper'>
+        <doughnut
+        :data="dChartData"
+        :options="{responsive: false, maintainAspectRatio: false}"
+        :width="300"
+        :height="300" id='doughnutChart'>
+        </doughnut>
+    </div>
     <!-- <div class="">
       {{animRaces}} {{ animPoints }}
     </div> -->
@@ -16,10 +24,12 @@
 import firebase from 'firebase'
 import anime from 'animejs'
 import navbar from './navbar'
+import doughnut from '../helpers/statsChartOne'
 export default {
   name: 'stats',
   components: {
-    navbar
+    navbar,
+    doughnut
   },
   data () {
     return {
@@ -27,7 +37,8 @@ export default {
       animPoints: {points : 0},
       animRaces: {races : 0},
       animUserPoints: {points: 0},
-      animUserRaces: {races: 0}
+      animUserRaces: {races: 0},
+     
     }
   },
   watch: {
@@ -81,7 +92,38 @@ export default {
     },
     nbUsers () {
       return this.verUsers.length
+    },
+    // charts ***********************************************
+     dChartData() {
+       return {
+         datasets: [{
+            data: [
+              this.userPoints,
+              (this.userPoints*10),
+              (1200-this.userPoints)
+            ],
+            backgroundColor: ["green", "cadetBlue", "lightGrey"]
+          }],
+         // These labels appear in the legend and in the tooltips when hovering different arcs
+          labels: [
+            'Your points',
+            'All points',
+            'Still left'
+         ],
+      
+        }
       }
+    //  dChartOptions() {
+    //    return {datasets: [{
+    //         data: [this.userPoints, 20, (1200-this.userPoints)]
+    //     }],
+    //     // These labels appear in the legend and in the tooltips when hovering different arcs
+    //     labels: [
+    //         'Your points',
+    //         'Yellow',
+    //         'Blue'
+    //     ]}
+    //   }
     },
   created: function () {
       if (this.userRaces.length==0) {
@@ -137,5 +179,10 @@ export default {
 h1, h2 {
   font-weight: normal;
 }
-
+.chartWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
 </style>
