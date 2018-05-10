@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <navbar></navbar>
-    <div v-if="!dChart" class="button" @click="dChart = !dChart">Say it with charts</div>
+    <div v-if="!dChart" class="button" @click="dChart = !dChart">Say it with chart</div>
     <div v-if="dChart" class="button" @click="dChart = !dChart">Back to numbers</div>
     <div v-if="!dChart">
     <h2>Your stats</h2>

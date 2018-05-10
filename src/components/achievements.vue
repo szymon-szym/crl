@@ -4,6 +4,16 @@
     <h2>Here you can find your cool achievements</h2>
     <div class="badges">
       <div class="achCont">
+        <div v-if="ach0" >
+          <img src="../assets/ach/first_race.svg" alt="jupi!">
+          <p>Your account is verified!</p>
+        </div>
+        <div v-if="!ach0" >
+          <img src="../assets/ach/trophy_grey.svg" alt="locked">
+          <p class="lockedAch">Verification</p>
+        </div>
+      </div>
+      <div class="achCont">
         <div v-if="ach1" >
           <img src="../assets/ach/first_race.svg" alt="jupi!">
           <p>First race!</p>
@@ -33,28 +43,27 @@
           <p class="lockedAch">3 races</p>
         </div>
       </div>
-      <!-- from here dummy -->
+      <div class="achCont">
+        <div v-if="ach4">
+          <img src="../assets/ach/first_race.svg" alt="jupi!">
+          <p>You run over 50 km!</p>
+        </div>
+        <div v-if="!ach4" >
+          <img src="../assets/ach/trophy_grey.svg" alt="locked">
+          <p class="lockedAch">50 km</p>
+        </div>
+      </div>
+      <div class="achCont">
+        <div v-if="ach5">
+          <img src="../assets/ach/first_race.svg" alt="jupi!">
+          <p>You finished 5 races!</p>
+        </div>
+        <div v-if="!ach5">
+          <img src="../assets/ach/trophy_grey.svg" alt="locked">
+          <p class="lockedAch">5 races</p>
+        </div>
+      </div>
       <!-- <div class="achCont">
-        <div v-if="ach4">
-          <img src="../assets/ach/first_race.svg" alt="jupi!">
-          <p> :)</p>
-        </div>
-        <div v-if="!ach4" >
-          <img src="../assets/ach/trophy_grey.svg" alt="locked">
-          <p class="lockedAch">More achievements :)</p>
-        </div>
-      </div>
-      <div class="achCont">
-        <div v-if="ach4">
-          <img src="../assets/ach/first_race.svg" alt="jupi!">
-          <p> :)</p>
-        </div>
-        <div v-if="!ach4" >
-          <img src="../assets/ach/trophy_grey.svg" alt="locked">
-          <p class="lockedAch">More achievements :)</p>
-        </div>
-      </div>
-      <div class="achCont">
         <div v-if="ach4">
           <img src="../assets/ach/first_race.svg" alt="jupi!">
           <p> :)</p>
@@ -81,15 +90,25 @@ export default {
   data () {
     return {
         ach: {
+          ach0: false,
           ach1: false,
           ach2: false,
-          ach3: false
+          ach3: false,
+          ach4: false,
+          ach5: false
         }
     }
   },
   computed: {
     currentUser () {
       return this.$store.getters.getUser
+    },
+    verUsers () {
+      let users = []
+      for (let user of this.$store.getters.getVerUsers) {
+        users.push(user['.key'])
+      }
+      return users
     },
     userRaces () {
       return this.$store.getters.getUserRaces
@@ -108,13 +127,27 @@ export default {
       }
     },
     ach2 () {
-      console.log(this.userPoints)
       if (this.userPoints > 20) {
         return true
       }
     },
     ach3 () {
       if (this.userRaces.length >= 3) {
+        return true
+      }
+    },
+    ach4 () {
+      if (this.userPoints > 50) {
+        return true
+      }
+    },
+    ach5 () {
+      if (this.userRaces.length >= 5) {
+        return true
+      }
+    },
+    ach0 () {
+      if (this.verUsers.includes(this.currentUser.uid)) {
         return true
       }
     }
