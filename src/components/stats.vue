@@ -6,7 +6,8 @@
     <hr>
     <h2>League stats</h2>
     <h3>We have {{ nbUsers }} verified users with {{animRaces.races}} races and {{ animPoints.points }} points (out of 1200)</h3>
-    <div class='chartWrapper'>
+    <div class="button" @click="dChart = !dChart">Say it with chart</div>
+    <div class='chartWrapper' v-if="dChart">
         <doughnut
         :data="dChartData"
         :options="{responsive: false, maintainAspectRatio: false}"
@@ -38,6 +39,7 @@ export default {
       animRaces: {races : 0},
       animUserPoints: {points: 0},
       animUserRaces: {races: 0},
+      dChart: false
     }
   },
   watch: {
@@ -174,9 +176,25 @@ h1, h2 {
   font-weight: normal;
 }
 .chartWrapper {
+  margin-top: 20px;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+}
+.button {
+  background-color: lightgrey;
+  padding: 3px 10px 3px 10px;
+  height: 30px;
+  width: 150px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+}
+.button:hover {
+  background-color: Turquoise;
+  cursor: default;
 }
 </style>
