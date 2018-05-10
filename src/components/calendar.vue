@@ -18,7 +18,7 @@
           <th class = "row-distance">km</th>
           <th class = "row-buttons"></th>
         </tr>
-        <tr v-for="(race, index) of filteredRaces" v-bind:id="race.key" v-if="range(race.date)">
+        <tr v-for="(race, index) of filteredRaces" v-bind:key="race.key" v-if="range(race.date)">
           <td> {{ race.name }}</td>
           <td> {{ race.location }}</td>
           <td> {{ race.date }}</td>

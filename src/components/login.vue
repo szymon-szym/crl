@@ -22,12 +22,14 @@
           </button>        
           <button class="enterBtn" @click="emailForm = !emailForm" >
             <img src="../assets/login/email1.svg" alt="emailBtn">
-            <div class="btnTxt">Use your login</div>
+            <div class="btnTxt">Custom login/register</div>
           </button>
           <transition name="fade">
             <div class="emailForm" v-if="emailForm">
               <input type="text" v-model="email" placeholder="user login (no special chars)" value="">
+              <span class="err" v-if="err.name"> {{errMessage.name}} </span>
               <input type="password" v-model="password" placeholder="user password (min 6 chars)" value="">
+              <span class="err" v-if="err.password"> {{errMessage.password}} </span>
               <div class="buttonsWrapper">
                 <div class="button" @click="login">Enter</div>
                 <span>or</span>
@@ -36,9 +38,9 @@
             </div>
           </transition>
         </div>
-          <div class="buttonSlide"  @click="onboard = !onboard">Click to see introduction</div>
+          <!-- <div class="buttonSlide"  @click="onboard = !onboard">Click to see introduction</div> -->
           <!-- <transition name="fade"> -->
-            <onboard v-if="onboard"></onboard>
+            <!-- <onboard v-if="onboard"></onboard> -->
           <!-- </transition> -->
       </div>
     </transition>
@@ -63,7 +65,15 @@ export default {
       emailForm: false,
       register: false,
       intro: true,
-      onboard: false
+      onboard: false,
+      errMessage: {
+        name: '',
+        password: ''
+        },
+      err: {
+        name: false,
+        password: false
+      }
     }
   },
   mounted: function () {
@@ -72,11 +82,33 @@ export default {
   destroyed() {
     location.reload()
   },
-  computed() {
-  //
-  },
   methods : {
+    validation: function() {
+      //check login
+      let arrForbiden = ['@', '.' ]
+      if (this.email==='') {
+        this.errMessage.name = "login is required"
+        this.err.name = true
+      }
+      else if (this.email.includes(...arrForbiden)) {
+        this.errMessage.name = "do not use @ or . in your login"
+        this.err.name = true
+      }
+      else { this.err.name = false }
+      //check password
+        if (this.password==='') {
+          this.errMessage.password = "password is required"
+          this.err.password = true
+        }
+        else if (this.password.length < 6 ) {
+          this.errMessage.password = "please use min 6 chars"
+          this.err.password = true
+        }
+        else { this.err.password = false }
+    },
     login : function () {
+      this.validation()
+      if (!this.err.name && !this.err.password) {
       firebase.auth().signInWithEmailAndPassword((this.email + '@mail.com'), this.password).then(
         (user) => {
           this.$router.replace("home");
@@ -86,19 +118,22 @@ export default {
         var errorCode = error.code;
         var errorMessage = error.message;
         // ...
-      });
+        });
+      }
     },
     registerF: function () {
-      
-      firebase.auth().createUserWithEmailAndPassword((this.email + '@mail.com'), this.password).then(
-        (user) => {
-            this.$router.replace("home")
-          },
-        (error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          alert(error.message);
-        });
+      this.validation()
+      if (!this.err.name && !this.err.password) {
+        firebase.auth().createUserWithEmailAndPassword((this.email + '@mail.com'), this.password).then(
+          (user) => {
+              this.$router.replace("home")
+            },
+          (error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(error.message);
+          });
+      }
     },
     animLogo: function () {
       let timeline = anime.timeline()
@@ -125,17 +160,6 @@ export default {
           targets: '#runner, #background',
           duration: 500
         })
-        // .add({
-        //   targets: '#filledLogo',
-        //   opacity: 1,
-        //   duration: 1500
-        // })
-        // .add({
-        //   targets: '#background',
-        //   opacity: 0,
-        //   duration: 1500,
-        //   offset: '-=1500'
-        // })
       timeline.finished.then(()=> {
         this.intro = false;
       })
@@ -302,5 +326,10 @@ input {
 .buttonSlide:hover {
   background-color: Turquoise;
   cursor: default;
+}
+.err {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 10px;
 }
 </style>

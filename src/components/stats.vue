@@ -104,7 +104,7 @@ export default {
             data: [
               this.userPoints,
               (this.verPoints - this.userPoints),
-              (1200- (this.userPoints + this.verPoints))
+              (1200 - (this.userPoints + this.verPoints))
             ],
             backgroundColor: ["blue", "cadetBlue", "lightGrey"]
           }],
