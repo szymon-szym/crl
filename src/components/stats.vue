@@ -1,12 +1,15 @@
 <template>
   <div class="">
     <navbar></navbar>
+    <div v-if="!dChart" class="button" @click="dChart = !dChart">Say it with charts</div>
+    <div v-if="dChart" class="button" @click="dChart = !dChart">Back to numbers</div>
+    <div v-if="!dChart">
     <h2>Your stats</h2>
     <h3>You finished {{ animUserRaces.races }} races, and collect {{ animUserPoints.points }} points</h3>
     <hr>
     <h2>League stats</h2>
     <h3>We have {{ nbUsers }} verified users with {{animRaces.races}} races and {{ animPoints.points }} points (out of 1200)</h3>
-    <div class="button" @click="dChart = !dChart">Say it with chart</div>
+    </div>
     <div class='chartWrapper' v-if="dChart">
         <doughnut
         :data="dChartData"
@@ -113,8 +116,8 @@ export default {
          // These labels appear in the legend and in the tooltips when hovering different arcs
           labels: [
             'Your points',
-            'All points',
-            'Still left'
+            'Other runners',
+            'Points to earn'
          ],
       
         }
@@ -187,7 +190,7 @@ h1, h2 {
   padding: 3px 10px 3px 10px;
   height: 30px;
   width: 150px;
-  margin: auto;
+  margin: 20px auto auto auto;
   display: flex;
   justify-content: center;
   align-items: center;

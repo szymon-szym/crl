@@ -29,7 +29,7 @@
           </div>
           <div class="cardButtons">
             <div class="button" @click="editRace(race)">Edit</div>
-            <div class="button" @click="removeRace(race['.key'], index, race.name)">Remove</div>
+            <div class="button remove" @click="removeRace(race['.key'], index, race.name)">Remove</div>
           </div>
         </div>
     </div>
@@ -131,6 +131,7 @@ h2, h3 {
   margin: 15px auto 15px auto;
   display: flex;
   width: 300px;
+  min-height: 100px;
   /* shadows */
   -webkit-box-shadow: 10px 10px 15px -5px rgba(194,190,194,1);
   -moz-box-shadow: 10px 10px 15px -5px rgba(194,190,194,1);
@@ -174,6 +175,13 @@ h2, h3 {
 .button:hover {
   background-color: Turquoise;
   cursor: default;
+}
+.button.remove:hover {
+  background-color: Turquoise;
+  cursor: default;
+}
+.button.remove {
+  background-color: aquamarine;
 }
 /* menu */
 .menu {
