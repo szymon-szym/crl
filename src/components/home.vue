@@ -25,6 +25,7 @@
 <script>
 import firebase from 'firebase'
 import navbar from './navbar.vue'
+import store from '../store'
 // import * as fireFetch from '../api/fetchFirebase'
 export default {
   components: {
@@ -40,6 +41,14 @@ export default {
   computed: {
     user() {
       return this.$store.getters.getUser
+    },
+    userProvider() {
+      let providerData = this.$store.getters.getUser.providerData
+      let providerId
+      for (let data of providerData) {
+        providerId = data.providerId
+      }
+      return providerId
     },
     verUser() {
       return this.$store.getters.getVerUsers
@@ -59,13 +68,11 @@ export default {
   },
   created() {
     //passing firebase ref for Vuexfire actions
-    this.$store.dispatch('setAllRacesRef', firebase.database().ref('userRaces'))
+    // this.$store.dispatch('setAllRacesRef', firebase.database().ref('userRaces'))
     this.$store.dispatch('setCalendRacesRef', firebase.database().ref('calend'))
     this.$store.dispatch('setVerUsers', firebase.database().ref('verifiedUsers'))
     this.$store.dispatch('setUserRaces')
     this.$store.commit('setUser')
-  console.log(this.allRaces )
-  console.log(this.calendRaces )
   },
   methods: {
     goTo: function(location) {

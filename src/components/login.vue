@@ -69,7 +69,10 @@ export default {
   mounted: function () {
     this.animLogo()
   },
-  computed: {
+  destroyed() {
+    location.reload()
+  },
+  computed() {
   //
   },
   methods : {
