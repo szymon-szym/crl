@@ -166,12 +166,13 @@ export default {
     },
     loginGoogle: function () {
       let provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithRedirect(provider)
+      firebase.auth().signInWithPopup(provider)
       .then( result => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken;
         // The signed-in user info.
         var user = result.user;
+        this.$router.replace("home");
       })
       .catch(error => {
         // Handle Errors here.
