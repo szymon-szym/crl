@@ -121,7 +121,6 @@ export default {
       return points
     },
     ach1 () {
-      console.log(this.userRaces.length)
       if (this.userRaces.length) {
         return true
       }

@@ -7,7 +7,7 @@
     <h2>Your stats</h2>
     <h3>You finished {{ animUserRaces.races }} races, and collect {{ animUserPoints.points }} points</h3>
     <hr>
-    <h2>League stats</h2>
+    <h2>League live stats</h2>
     <h3>We have {{ nbUsers }} verified users with {{animRaces.races}} races and {{ animPoints.points }} points (out of 1200)</h3>
     </div>
     <div class='chartWrapper' v-if="dChart">

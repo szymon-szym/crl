@@ -77,7 +77,7 @@ export default {
         this.tempDate = moment(this.raceToAdd.date, 'l').toDate()
       }
       this.tempRace.key = this.tempRace['.key']
-      console.log(this.tempRace.key)
+      // console.log(this.tempRace.key)
     },
   methods: {
     pickerFormat: function(date) {
@@ -117,7 +117,7 @@ export default {
       }
       else {
         this.tempRace.distance = Math.floor(this.tempRace.distance)
-        console.log(this.tempRace.distance);
+        // console.log(this.tempRace.distance);
         this.err.distance = false
       }
     },

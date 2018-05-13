@@ -100,7 +100,7 @@ export default new Vuex.Store({
       let userRef = 'userRaces/' + user.uid
       firebase.database().ref(userRef).push(race)
       context.commit('clearRaceToAdd')
-      console.log('race added')
+      // console.log('race added')
     },
     clearRaceToAdd: context => {
       context.commit('clearRaceToAdd')
